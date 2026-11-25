@@ -12,6 +12,10 @@ app = FastAPI()
 async def root():
     return {"message": "Hello, World"}
 
+@app.post("/signup")
+async def signup():
+    return {"good to go"}
+
 @app.get("/models/{model_name}")
 async def get_model_name(model_name: ModelName):
     if model_name == ModelName.alexnet:
