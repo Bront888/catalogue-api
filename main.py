@@ -65,3 +65,21 @@ async def read_item(skip: int = 0, limit: int = 10):
 async def read_file(file_path: str):
     return {"file path": file_path}
 
+
+
+
+# @app.options("/idontknow")
+# async def really():
+#     return {"good to go"}
+
+# @app.head("/idontknow")
+# async def really():
+#     return {"good to go"}
+
+# @app.trace("/idontknow")
+# async def really():
+#     return {"good to go"}
+
+# @app.patch("/idontknow")
+# async def really():
+#     return {"good to go"}
