@@ -20,6 +20,10 @@ async def signup():
 async def login(user: str, app: float):
     return {"good to go"}
 
+@app.get("/users")
+async def get_all_users():
+    return ["Ada", "Raphael", "Michael"]
+
 @app.get("/models/{model_name}")
 async def get_model_name(model_name: ModelName):
     if model_name == ModelName.alexnet:
