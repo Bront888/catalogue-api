@@ -24,6 +24,10 @@ async def login(user: str, app: float):
 async def get_all_users():
     return ["Ada", "Raphael", "Michael"]
 
+@app.get("/users/{userid}")
+async def read_user_id(userid: int):
+    return {"Here you go": userid}
+
 @app.get("/models/{model_name}")
 async def get_model_name(model_name: ModelName):
     if model_name == ModelName.alexnet:
