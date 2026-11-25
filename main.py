@@ -8,6 +8,10 @@ class ModelName(StrEnum):
 
 app = FastAPI()
 
+@app.get("/")
+async def root():
+    return {"message": "Hello, World"}
+
 @app.get("/models/{model_name}")
 async def get_model_name(model_name: ModelName):
     if model_name == ModelName.alexnet:
@@ -36,3 +40,4 @@ async def read_item(skip: int = 0, limit: int = 10):
 @app.get("/files/{file_path: path}")
 async def read_file(file_path: str):
     return {"file path": file_path}
+
