@@ -28,6 +28,10 @@ async def get_all_users():
 async def read_user_id(userid: int):
     return {"Here you go": userid}
 
+@app.delete("/login")
+async def del_user(userid: str, password: float, consent):
+    return {"Deleted"}
+
 @app.get("/users/me")
 async def read_user_me():
     return {"Here you go": "current user"}
