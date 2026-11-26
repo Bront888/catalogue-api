@@ -153,7 +153,7 @@ async def create_item(item: Item):
 async def create_client(user: ClientIn) -> ClientOut:
     return user
 
-@app.get("/portal")
+@app.get("/portal", response_model=None )
 async def get_portal(teleport: bool) -> Response | dict:
     if teleport:
         return RedirectResponse(url="https://www.youtube.com/watch?v=EbrQWwu0ang")
