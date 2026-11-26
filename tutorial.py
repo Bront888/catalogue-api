@@ -158,7 +158,7 @@ async def get_portal(teleport: bool) -> Response | dict:
         return RedirectResponse(url="https://www.youtube.com/watch?v=EbrQWwu0ang")
     return JSONResponse(content={"message": "Here's your interdimensional portal."})
 
-@app.get("/teleport")
+@app.get("/teleport" response_model=None)
 async def get_teleport() -> RedirectResponse:
     return RedirectResponse(url="https://www.youtube.com/watch?v=EbrQWwu0ang")
 
