@@ -1,2 +1,8 @@
 [tool.fastapi]
 entrypoint = "main:app"
+
+[dependency-groups]
+dev = [
+    "email-validator>=2.4.0",
+    "pydantic[email]>=2.14.4",
+]

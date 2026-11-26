@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from enum import StrEnum
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
+
 
 class ModelName(StrEnum):
     alexnet = "alexnet"
@@ -19,6 +20,12 @@ class ItemResponse(BaseModel):
     price: float
     tax: float | None = None
     tags: list[str] = []
+
+class ClientIn(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+    phone: int | None = None
 
 app = FastAPI()
 
@@ -116,16 +123,21 @@ async def create_item(item: Item):
         item_dict.update({"price_with_tax": price_with_tax})
     return item_dict
 
-@app.put("/items/{item_id}")
+@app.put("/items/{item_id}", response_model=Item)
 async def update_item(item_id: int, item: Item, q: str | None = None):
     result = {"item_id": item_id, **item.model_dump()}
     if q:
         result.update({"q": q})
     return result
 
-@app.get("/items/{item_id}")
+@app.get("/items/{item_id}", response_model=ItemResponse)
 async def read_items() -> list[ItemResponse]:
     return [
         Item(name="Portal Gun", price=42.0),
         Item(name="Plumbus", price=32.0)
     ]
+
+#Never to be done in production!!
+@app.post("/client")
+async def create_client(user: ClientIn):
+    return user
