@@ -13,7 +13,8 @@ class Item(BaseModel):
     name: str
     description: str | None = None
     price: float
-    tax: float | None = None
+    tax: float = 10.5
+    tags: list[str] = []
 
 class ItemResponse(BaseModel):
     name: str
@@ -129,19 +130,19 @@ async def create_item(item: Item):
         item_dict.update({"price_with_tax": price_with_tax})
     return item_dict
 
-@app.put("/items/{item_id}", response_model=Item)
-async def update_item(item_id: int, item: Item, q: str | None = None):
-    result = {"item_id": item_id, **item.model_dump()}
-    if q:
-        result.update({"q": q})
-    return result
+# @app.put("/items/{item_id}", response_model=Item)
+# async def update_item(item_id: int, item: Item, q: str | None = None):
+#     result = {"item_id": item_id, **item.model_dump()}
+#     if q:
+#         result.update({"q": q})
+#     return result
 
-@app.get("/items/{item_id}", response_model=ItemResponse)
-async def read_items() -> list[ItemResponse]:
-    return [
-        Item(name="Portal Gun", price=42.0),
-        Item(name="Plumbus", price=32.0)
-    ]
+# @app.get("/items/{item_id}", response_model=ItemResponse)
+# async def read_items() -> list[ItemResponse]:
+#     return [
+#         Item(name="Portal Gun", price=42.0),
+#         Item(name="Plumbus", price=32.0)
+#     ]
 
 #Never to be done in production!!
 # @app.post("/client")
@@ -158,7 +159,16 @@ async def get_portal(teleport: bool) -> Response | dict:
         return RedirectResponse(url="https://www.youtube.com/watch?v=EbrQWwu0ang")
     return JSONResponse(content={"message": "Here's your interdimensional portal."})
 
-@app.get("/teleport" response_model=None)
+@app.get("/teleport", response_model=None)
 async def get_teleport() -> RedirectResponse:
     return RedirectResponse(url="https://www.youtube.com/watch?v=EbrQWwu0ang")
 
+items = {
+    "foo": {"name": "Foo", "price": 50.2},
+    "bar": {"name": "Bar", "description": "The bartenders", "price": 62, "tax": 20.2},
+    "baz": {"name": "Baz", "description": None, "price": 50.2, "tax": 10.5, "tags": []},
+}
+
+@app.get("/items/{item_id}", response_model=Item, response_model_exclude_unset=True)
+async def read_item(item_id: str):
+    return items[item_id]
