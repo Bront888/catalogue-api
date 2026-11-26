@@ -1,6 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from enum import StrEnum
 from pydantic import BaseModel, EmailStr
+from fastapi.responses import RedirectResponse, JSONResponse
 
 
 class ModelName(StrEnum):
@@ -150,3 +151,14 @@ async def read_items() -> list[ItemResponse]:
 @app.post("/client", response_model=ClientOut)
 async def create_client(user: ClientIn) -> ClientOut:
     return user
+
+@app.get("/portal")
+async def get_portal(teleport: bool) -> Response:
+    if teleport:
+        return RedirectResponse(url="https://www.youtube.com/watch?v=EbrQWwu0ang")
+    return JSONResponse(content={"message": "Here's your interdimensional portal."})
+
+@app.get("/teleport")
+async def get_teleport() -> RedirectResponse:
+    return RedirectResponse(url="https://www.youtube.com/watch?v=EbrQWwu0ang")
+
