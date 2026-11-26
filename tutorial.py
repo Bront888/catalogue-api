@@ -17,7 +17,7 @@ async def signup():
     return {"message": "Signed up"}
 
 @app.put("/login")
-async def login(user: str, app: float):
+async def login():
     return {"message": "Logged In"}
 
 @app.get("/users")
@@ -33,7 +33,7 @@ async def read_user_id(userid: int):
     return {"Here you go": userid}
 
 @app.delete("/login")
-async def del_user(userid: str, password: float, consent):
+async def del_user():
     return {"message": "Deleted"}
 
 @app.get("/models/{model_name}")
