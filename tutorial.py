@@ -111,4 +111,4 @@ async def create_item(item: Item):
 
 @app.put("/items/{item_id}")
 async def update_item(item_id: int, item: Item):
-    return {"item_id": item_id, **item.model_dump}
+    return {"item_id": item_id, **item.model_dump()}
