@@ -70,16 +70,16 @@ async def read_user_item(item_id: str, needy: str):
     item = {"item_id": item_id, "needy": needy}
     return item
 
-# @app.get("/items/{item_id}")
-# async def read_item_id(item_id: str, q: str | None = None, short: bool = False):
-#     item = {"item_id": item_id}
-#     if q:
-#         item.update({"q": q})
-#     if not short:
-#         item.update(
-#             {"Description": "This is an amazing item that has a long description"}
-#         )
-#     return item_id
+@app.get("/items/{item_id}")
+async def read_item_id(item_id: str, q: str | None = None, short: bool = False):
+    item = {"item_id": item_id}
+    if q:
+        item.update({"q": q})
+    if not short:
+        item.update(
+            {"Description": "This is an amazing item that has a long description"}
+        )
+    return item
 
 @app.get("/users/{user_id}/items/{item_id}")
 async def read_user_item(
