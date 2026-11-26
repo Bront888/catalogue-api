@@ -27,6 +27,11 @@ class ClientIn(BaseModel):
     password: str
     phone: int | None = None
 
+class ClientOut(BaseModel):
+    name: str
+    email: EmailStr
+    phone: int | None = None
+
 app = FastAPI()
 
 @app.get("/")
@@ -138,6 +143,10 @@ async def read_items() -> list[ItemResponse]:
     ]
 
 #Never to be done in production!!
-@app.post("/client")
-async def create_client(user: ClientIn) -> ClientIn:
+# @app.post("/client")
+# async def create_client(user: ClientIn) -> ClientIn:
+#     return user
+
+@app.post("/client", response_model=ClientOut)
+async def create_client(user: ClientIn) -> ClientOut:
     return user
