@@ -153,7 +153,7 @@ async def create_client(user: ClientIn) -> ClientOut:
     return user
 
 @app.get("/portal")
-async def get_portal(teleport: bool) -> Response:
+async def get_portal(teleport: bool) -> Response | dict:
     if teleport:
         return RedirectResponse(url="https://www.youtube.com/watch?v=EbrQWwu0ang")
     return JSONResponse(content={"message": "Here's your interdimensional portal."})
