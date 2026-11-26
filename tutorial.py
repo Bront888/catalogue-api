@@ -1,10 +1,17 @@
 from fastapi import FastAPI
 from enum import StrEnum
+from pydantic import BaseModel
 
 class ModelName(StrEnum):
-    alexnet = "alextnet"
+    alexnet = "alexnet"
     resnet = "resnet"
-    lenet = "lesnet"
+    lenet = "lenet"
+
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
 
 app = FastAPI()
 
@@ -94,20 +101,14 @@ async def read_user_item(
         )
     return item
 
+@app.post("/items")
+async def create_item(item: Item):
+    item_dict = item.model_dump
+    if item.tax is not None:
+        price_with_tax = item.price + item.tax
+        item_dict.update({"price_with_tax": price_with_tax})
+    return item_dict
 
-
-# @app.options("/idontknow")
-# async def really():
-#     return {"good to go"}
-
-# @app.head("/idontknow")
-# async def really():
-#     return {"good to go"}
-
-# @app.trace("/idontknow")
-# async def really():
-#     return {"good to go"}
-
-# @app.patch("/idontknow")
-# async def really():
-#     return {"good to go"}
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item):
+    return {"item_id": item_id, **item.model_dump}
