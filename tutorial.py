@@ -14,11 +14,11 @@ async def root():
 
 @app.post("/signup")
 async def signup():
-    return {"good to go"}
+    return {"message": "Signed up"}
 
 @app.put("/login")
 async def login(user: str, app: float):
-    return {"good to go"}
+    return {"message": "Logged In"}
 
 @app.get("/users")
 async def get_all_users():
@@ -26,7 +26,7 @@ async def get_all_users():
 
 @app.get("/users/me")
 async def read_user_me():
-    return {"Here you go": "current user"}
+    return {"message": "Current user"}
 
 @app.get("/users/{userid}")
 async def read_user_id(userid: int):
@@ -34,7 +34,7 @@ async def read_user_id(userid: int):
 
 @app.delete("/login")
 async def del_user(userid: str, password: float, consent):
-    return {"Deleted"}
+    return {"message": "Deleted"}
 
 @app.get("/models/{model_name}")
 async def get_model_name(model_name: ModelName):
