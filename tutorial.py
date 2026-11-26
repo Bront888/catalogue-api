@@ -139,5 +139,5 @@ async def read_items() -> list[ItemResponse]:
 
 #Never to be done in production!!
 @app.post("/client")
-async def create_client(user: ClientIn):
+async def create_client(user: ClientIn) -> ClientIn:
     return user
