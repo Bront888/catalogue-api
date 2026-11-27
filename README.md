@@ -1,33 +1,89 @@
-# catalogue-api
-• Build a small FastAPI service with Postgres (Supabase). Reusing what I know from Aegis.
+# Catalogue API
 
-## What it does
-- sends get, update, post and delete API requests 
+A small FastAPI tutorial project that demonstrates routing, path and query parameters,
+Pydantic request and response models, enums, and HTTP methods.
 
-## Setup
+The current implementation lives in `tutorial.py` and uses an in-memory item list.
+It does not connect to PostgreSQL or Supabase yet.
+
+## Requirements
+
+- Python 3.10 or newer
+- [uv](https://docs.astral.sh/uv/) (recommended) or pip
+
+## Installation
+
+Using uv:
+
+```bash
+uv sync
 ```
-py -m venv .venv
-pip install fastapi[standard]
-winget install --id=astral-sh.uv -e
-pip freeze > requirements.txt
 
+Using pip:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
-## Run
-uv run fastapi dev
 
-## Test
-pytest
+On Windows PowerShell, activate the virtual environment with:
 
-## What I learned
+```powershell
+.venv\Scripts\Activate.ps1
+```
 
-- Classes & Type Hints: Built BankAccount with explicit type annotations (str, float, bool, None) for attributes, arguments, and return values.
+## Run the API
 
-- Custom Exceptions: Created InsufficientFundsError(Exception), triggered it with raise, and handled it with try ... except.
+From the project directory, run:
 
-- List & Dict Comprehensions: Filtered account owners (vips) and mapped names to balances (balance_map) in single, readable lines.
+```bash
+uv run fastapi dev tutorial.py
+```
 
-- Dunder Methods & @dataclass: Learned how __repr__ replaces memory addresses with readable output, and how @dataclass auto-generates __init__, __repr__, and ==.
+The API is available at <http://127.0.0.1:8000>. Interactive documentation is
+available at:
 
-- Automated Testing with pytest: Wrote unit tests using assert, pytest.raises, @pytest.fixture for clean setup, and @pytest.mark.parametrize to test multiple inputs at once.
+- Swagger UI: <http://127.0.0.1:8000/docs>
+- ReDoc: <http://127.0.0.1:8000/redoc>
 
-- Production Code Hygiene: Learned how if __name__ == "__main__": prevents demo code from running on import, why input validation (amount <= 0) protects state, and why decimal.Decimal is preferred over float for money.
+## Example endpoints
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `GET` | `/` | Returns a welcome message |
+| `POST` | `/signup` | Returns a signup confirmation |
+| `PUT` | `/login` | Returns a login confirmation |
+| `DELETE` | `/login` | Returns a deletion confirmation |
+| `GET` | `/users` | Returns a list of example users |
+| `GET` | `/users/me` | Returns the current-user placeholder |
+| `GET` | `/users/{userid}` | Returns a numeric user ID |
+| `GET` | `/models/{model_name}` | Returns a message for `alexnet`, `resnet`, or `lenet` |
+| `GET` | `/items?skip=0&limit=10` | Returns a paginated slice of the in-memory item list |
+| `GET` | `/files/{file_path}` | Returns an example file path; supports nested paths |
+| `POST` | `/items` | Creates an item from a Pydantic request body |
+| `PUT` | `/items/{item_id}` | Updates an item and optionally accepts a `q` query parameter |
+| `GET` | `/items/{item_id}` | Returns the sample item response list |
+
+## Example requests
+
+Create an item:
+
+```bash
+curl -X POST "http://127.0.0.1:8000/items" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Portal Gun","description":"Portal device","price":42,"tax":5}'
+```
+
+Get a model:
+
+```bash
+curl "http://127.0.0.1:8000/models/alexnet"
+```
+
+Get a page of items:
+
+```bash
+curl "http://127.0.0.1:8000/items?skip=0&limit=2"
+```
+
