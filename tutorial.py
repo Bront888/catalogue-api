@@ -182,7 +182,7 @@ items = {
 
 @app.get("/items/{item_id}", response_model=Item2, response_model_exclude_unset=True)
 async def read_item2(item_id: str):
-    if int(item_id):
+    if item_id is int:
         raise HTTPException(status_code=400, detail="Type int not supported")
     if item_id not in items:
         raise HTTPException(status_code=404, detail=f"{item_id} doesn't exist")
