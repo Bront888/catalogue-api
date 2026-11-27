@@ -1,10 +1,7 @@
 from fastapi import FastAPI, Response
 from enum import StrEnum
 from pydantic import BaseModel, EmailStr
-<<<<<<< HEAD
-=======
 from fastapi.responses import RedirectResponse, JSONResponse
->>>>>>> 5744fb65077dd35af37d3f96e87813415c3eff5e
 
 
 class ModelName(StrEnum):
@@ -38,14 +35,11 @@ class ClientIn(BaseModel):
     password: str
     phone: int | None = None
 
-<<<<<<< HEAD
-=======
 class ClientOut(BaseModel):
     name: str
     email: EmailStr
     phone: int | None = None
 
->>>>>>> 5744fb65077dd35af37d3f96e87813415c3eff5e
 app = FastAPI()
 
 @app.get("/")
@@ -142,26 +136,6 @@ async def create_item(item: Item):
         item_dict.update({"price_with_tax": price_with_tax})
     return item_dict
 
-<<<<<<< HEAD
-@app.put("/items/{item_id}", response_model=Item)
-async def update_item(item_id: int, item: Item, q: str | None = None):
-    result = {"item_id": item_id, **item.model_dump()}
-    if q:
-        result.update({"q": q})
-    return result
-
-@app.get("/items/{item_id}", response_model=ItemResponse)
-async def read_items() -> list[ItemResponse]:
-    return [
-        Item(name="Portal Gun", price=42.0),
-        Item(name="Plumbus", price=32.0)
-    ]
-
-#Never to be done in production!!
-@app.post("/client")
-async def create_client(user: ClientIn):
-    return user
-=======
 # @app.put("/items/{item_id}", response_model=Item)
 # async def update_item(item_id: int, item: Item, q: str | None = None):
 #     result = {"item_id": item_id, **item.model_dump()}
@@ -204,4 +178,3 @@ items = {
 @app.get("/items/{item_id}", response_model=Item2, response_model_exclude_unset=True)
 async def read_item2(item_id: str):
     return items[item_id]
->>>>>>> 5744fb65077dd35af37d3f96e87813415c3eff5e
