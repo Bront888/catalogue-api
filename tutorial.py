@@ -1,4 +1,6 @@
-from fastapi import FastAPI, Response
+from typing import Annotated
+
+from fastapi import FastAPI, Query, Response, HTTPException
 from enum import StrEnum
 from pydantic import BaseModel, EmailStr
 from fastapi.responses import RedirectResponse, JSONResponse
@@ -13,7 +15,7 @@ class Item(BaseModel):
     name: str
     description: str | None = None
     price: float
-    tax: float | None
+    tax: float | None = None
 
 class Item2(BaseModel):
     name: str
@@ -92,7 +94,10 @@ async def get_model_name(model_name: ModelName):
 fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
 
 @app.get("/items")
-async def read_item(skip: int = 0, limit: int = 10):
+async def read_item(
+    skip: Annotated[int, Query(ge=0)] = 0,
+    limit: Annotated[int, Query(ge=1, le=100)] = 10
+):
     return fake_items_db[skip: skip + limit]
 
 @app.get("/files/{file_path:path}")
@@ -177,4 +182,8 @@ items = {
 
 @app.get("/items/{item_id}", response_model=Item2, response_model_exclude_unset=True)
 async def read_item2(item_id: str):
+    if int(item_id):
+        raise HTTPException(status_code=400, detail="Type int not supported")
+    if item_id not in items:
+        raise HTTPException(status_code=404, detail=f"{item_id} doesn't exist")
     return items[item_id]
